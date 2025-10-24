@@ -1,0 +1,434 @@
+[
+  {
+    "vendor": "Antares",
+    "name": "Auto-Tune Pro",
+    "slug": "antares_autotune_pro",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Pitch", "Vocal"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Antares",
+    "name": "Auto-Tune Artist",
+    "slug": "antares_autotune_artist",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Pitch", "Vocal"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Antares",
+    "name": "Auto-Tune EFX+",
+    "slug": "antares_autotune_efx_plus",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Pitch", "Effect"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Antares",
+    "name": "Harmony Engine",
+    "slug": "antares_harmony_engine",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Pitch", "Harmony"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Celemony",
+    "name": "Melodyne 5 Studio",
+    "slug": "celemony_melodyne_5_studio",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Pitch", "Editing"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Celemony",
+    "name": "Melodyne 5 Essential",
+    "slug": "celemony_melodyne_5_essential",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Pitch", "Editing"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Synchro Arts",
+    "name": "Revoice Pro",
+    "slug": "synchroarts_revoice_pro",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Pitch", "Vocal"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "iZotope",
+    "name": "Nectar 3 Plus",
+    "slug": "izotope_nectar_3_plus",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Vocal", "Channel Strip"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "iZotope",
+    "name": "Neutron 4",
+    "slug": "izotope_neutron_4",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Mixing", "Channel Strip"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "iZotope",
+    "name": "Ozone 11",
+    "slug": "izotope_ozone_11",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Mastering"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "iZotope",
+    "name": "RX 10 Voice De-noise",
+    "slug": "izotope_rx10_voice_denoise",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Restoration", "Noise"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "FabFilter",
+    "name": "Pro-Q 3",
+    "slug": "fabfilter_pro_q_3",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["EQ"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "FabFilter",
+    "name": "Pro-C 2",
+    "slug": "fabfilter_pro_c_2",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Compressor"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "FabFilter",
+    "name": "Pro-DS",
+    "slug": "fabfilter_pro_ds",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "De-Esser"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "FabFilter",
+    "name": "Pro-G",
+    "slug": "fabfilter_pro_g",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Gate"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "FabFilter",
+    "name": "Pro-L 2",
+    "slug": "fabfilter_pro_l_2",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Limiter"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "FabFilter",
+    "name": "Saturn 2",
+    "slug": "fabfilter_saturn_2",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Saturation"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Soundtoys",
+    "name": "Decapitator",
+    "slug": "soundtoys_decapitator",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Saturation"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Soundtoys",
+    "name": "EchoBoy",
+    "slug": "soundtoys_echoboy",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Delay"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Soundtoys",
+    "name": "Little AlterBoy",
+    "slug": "soundtoys_little_alterboy",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Pitch", "Vocal"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Soundtoys",
+    "name": "MicroShift",
+    "slug": "soundtoys_microshift",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Modulation", "Stereo"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "UAD",
+    "name": "LA-2A Leveler",
+    "slug": "uad_la2a_leveler",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Compressor"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "UAD",
+    "name": "1176 Classic Limiter",
+    "slug": "uad_1176_classic",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Compressor"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "UAD",
+    "name": "Fairchild 670",
+    "slug": "uad_fairchild_670",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Compressor"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "UAD",
+    "name": "Pultec EQP-1A",
+    "slug": "uad_pultec_eqp1a",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["EQ"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "UAD",
+    "name": "Neve 1073",
+    "slug": "uad_neve_1073",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["EQ", "Preamp"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Waves",
+    "name": "Renaissance Vox",
+    "slug": "waves_renaissance_vox",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Vocal"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Waves",
+    "name": "Renaissance Compressor",
+    "slug": "waves_renaissance_comp",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Compressor"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Waves",
+    "name": "Vocal Rider",
+    "slug": "waves_vocal_rider",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Automation", "Vocal"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Waves",
+    "name": "CLA-76",
+    "slug": "waves_cla76",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Compressor"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Valhalla",
+    "name": "VintageVerb",
+    "slug": "valhalla_vintageverb",
+    "formats": ["VST3", "AU"],
+    "categories": ["Reverb"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Valhalla",
+    "name": "Delay",
+    "slug": "valhalla_delay",
+    "formats": ["VST3", "AU"],
+    "categories": ["Delay"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Eventide",
+    "name": "Blackhole",
+    "slug": "eventide_blackhole",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Reverb"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Eventide",
+    "name": "H910 Harmonizer",
+    "slug": "eventide_h910",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Pitch", "Modulation"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Eventide",
+    "name": "Quadravox",
+    "slug": "eventide_quadravox",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Pitch", "Harmony"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Slate Digital",
+    "name": "Virtual Mix Rack",
+    "slug": "slate_vmr",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Channel Strip"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Slate Digital",
+    "name": "FG-X 2",
+    "slug": "slate_fg_x2",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Limiter"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Softube",
+    "name": "Tube-Tech CL 1B",
+    "slug": "softube_tube_tech_cl1b",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Compressor"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Softube",
+    "name": "Weiss DS1-MK3",
+    "slug": "softube_weiss_ds1",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Limiter"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "SSL Native",
+    "name": "Vocalstrip 2",
+    "slug": "ssl_vocalstrip_2",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Vocal", "Channel Strip"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "SSL Native",
+    "name": "Bus Compressor 2",
+    "slug": "ssl_bus_compressor_2",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Compressor"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Tokyo Dawn",
+    "name": "TDR Nova GE",
+    "slug": "tdr_nova_ge",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["EQ", "Dynamics"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Tokyo Dawn",
+    "name": "Kotelnikov GE",
+    "slug": "tdr_kotelnikov_ge",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Compressor"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Sonible",
+    "name": "smart:comp 2",
+    "slug": "sonible_smart_comp_2",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Compressor"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Sonible",
+    "name": "smart:eq 4",
+    "slug": "sonible_smart_eq_4",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["EQ"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Sonnox",
+    "name": "Oxford Inflator",
+    "slug": "sonnox_oxford_inflator",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Enhancer"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Sonnox",
+    "name": "SuprEsser",
+    "slug": "sonnox_supresser",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "De-Esser"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Plugin Alliance",
+    "name": "bx_console SSL 4000 E",
+    "slug": "pa_bx_console_ssl4000e",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Channel Strip"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Plugin Alliance",
+    "name": "AMEK EQ 200",
+    "slug": "pa_amek_eq200",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["EQ"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Plugin Alliance",
+    "name": "bx_limiter TP",
+    "slug": "pa_bx_limiter_tp",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Dynamics", "Limiter"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Arturia",
+    "name": "Rev PLATE-140",
+    "slug": "arturia_rev_plate_140",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Reverb"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Arturia",
+    "name": "Dist COLDFIRE",
+    "slug": "arturia_dist_coldfire",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Saturation"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Eventide",
+    "name": "H3000 Factory",
+    "slug": "eventide_h3000_factory",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Modulation", "Pitch"],
+    "os": ["mac", "win"]
+  },
+  {
+    "vendor": "Waves",
+    "name": "Tune Real-Time",
+    "slug": "waves_tune_realtime",
+    "formats": ["VST3", "AU", "AAX"],
+    "categories": ["Pitch", "Vocal"],
+    "os": ["mac", "win"]
+  }
+]

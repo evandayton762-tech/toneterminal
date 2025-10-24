@@ -1,0 +1,212 @@
+{
+  "Ableton Live": [
+    {
+      "name": "Auto Filter",
+      "type": "Filter",
+      "description": "Versatile multimode filter with LFO modulation"
+    },
+    {
+      "name": "EQ Eight",
+      "type": "Equalizer",
+      "description": "Eight-band parametric equalizer for surgical shaping"
+    },
+    {
+      "name": "Glue Compressor",
+      "type": "Compressor",
+      "description": "Analog-modeled master bus compressor"
+    },
+    {
+      "name": "Compressor",
+      "type": "Compressor",
+      "description": "Flexible compressor with multiple modes"
+    },
+    {
+      "name": "Saturator",
+      "type": "Saturation",
+      "description": "Warmth and harmonics generator"
+    },
+    {
+      "name": "Hybrid Reverb",
+      "type": "Reverb",
+      "description": "Convolution and algorithmic reverb hybrid"
+    },
+    {
+      "name": "Delay",
+      "type": "Delay",
+      "description": "Stereo delay with modulation and filtering"
+    },
+    {
+      "name": "Limiter",
+      "type": "Limiter",
+      "description": "Transparent peak limiter"
+    }
+  ],
+  "FL Studio": [
+    {
+      "name": "Fruity Parametric EQ 2",
+      "type": "Equalizer",
+      "description": "Seven-band parametric EQ with spectrum analyzer"
+    },
+    {
+      "name": "Maximus",
+      "type": "Dynamics",
+      "description": "Multiband compression, limiting, and saturation"
+    },
+    {
+      "name": "Fruity Limiter",
+      "type": "Dynamics",
+      "description": "Limiter, gate, and compressor combo"
+    },
+    {
+      "name": "Fruity Reeverb 2",
+      "type": "Reverb",
+      "description": "Stereo algorithmic reverb with damping controls"
+    },
+    {
+      "name": "Fruity Delay 3",
+      "type": "Delay",
+      "description": "Advanced delay with filtering and diffusion"
+    },
+    {
+      "name": "Fruity Chorus",
+      "type": "Modulation",
+      "description": "Classic chorus for stereo widening"
+    },
+    {
+      "name": "Fruity Compressor",
+      "type": "Compressor",
+      "description": "Simple compressor for fast dynamics control"
+    },
+    {
+      "name": "Pitcher",
+      "type": "Pitch Correction",
+      "description": "Real-time pitch correction and harmonization"
+    }
+  ],
+  "Logic Pro": [
+    {
+      "name": "Channel EQ",
+      "type": "Equalizer",
+      "description": "Eight-band parametric EQ with analyzer"
+    },
+    {
+      "name": "Compressor",
+      "type": "Compressor",
+      "description": "Emulations of VCA, FET, and Opto compressors"
+    },
+    {
+      "name": "Limiter",
+      "type": "Limiter",
+      "description": "Intelligent peak limiter"
+    },
+    {
+      "name": "Space Designer",
+      "type": "Reverb",
+      "description": "Convolution reverb with extensive impulse library"
+    },
+    {
+      "name": "ChromaVerb",
+      "type": "Reverb",
+      "description": "Algorithmic reverb with colorful interfaces"
+    },
+    {
+      "name": "Tape Delay",
+      "type": "Delay",
+      "description": "Vintage tape-style delay effect"
+    },
+    {
+      "name": "Ensemble",
+      "type": "Modulation",
+      "description": "Chorus-like modulation for width"
+    },
+    {
+      "name": "Pitch Correction",
+      "type": "Pitch Correction",
+      "description": "Real-time pitch correction with scale detection"
+    }
+  ],
+  "Pro Tools": [
+    {
+      "name": "EQ III 7-Band",
+      "type": "Equalizer",
+      "description": "Precision seven-band parametric EQ"
+    },
+    {
+      "name": "Dyn3 Compressor/Limiter",
+      "type": "Compressor",
+      "description": "Classic compressor and limiter suite"
+    },
+    {
+      "name": "BF76",
+      "type": "Compressor",
+      "description": "1176-style FET compressor emulation"
+    },
+    {
+      "name": "D-Verb",
+      "type": "Reverb",
+      "description": "Algorithmic reverb with multiple modes"
+    },
+    {
+      "name": "Mod Delay III",
+      "type": "Delay",
+      "description": "Delay with modulation and filtering"
+    },
+    {
+      "name": "AIR Chorus",
+      "type": "Modulation",
+      "description": "Stereo chorus for width and movement"
+    },
+    {
+      "name": "SansAmp PSA-1",
+      "type": "Saturation",
+      "description": "Analog modeling for grit and character"
+    },
+    {
+      "name": "Pitch II",
+      "type": "Pitch Shifter",
+      "description": "Real-time pitch shifting and harmonies"
+    }
+  ],
+  "Reaper": [
+    {
+      "name": "ReaEQ",
+      "type": "Equalizer",
+      "description": "Unlimited-band parametric EQ"
+    },
+    {
+      "name": "ReaComp",
+      "type": "Compressor",
+      "description": "Flexible compressor with RMS and peak modes"
+    },
+    {
+      "name": "ReaXcomp",
+      "type": "Dynamics",
+      "description": "Multiband compressor/expander"
+    },
+    {
+      "name": "ReaVerbate",
+      "type": "Reverb",
+      "description": "Algorithmic reverb with essentials controls"
+    },
+    {
+      "name": "ReaDelay",
+      "type": "Delay",
+      "description": "Multi-tap delay with modulation"
+    },
+    {
+      "name": "ReaPitch",
+      "type": "Pitch Shifter",
+      "description": "Pitch shifting with formant preservation"
+    },
+    {
+      "name": "JS: Saturation",
+      "type": "Saturation",
+      "description": "Saturation effect from JSFX suite"
+    },
+    {
+      "name": "JS: Gated Verb",
+      "type": "Reverb",
+      "description": "Gated reverb tailored for vocals"
+    }
+  ]
+}
