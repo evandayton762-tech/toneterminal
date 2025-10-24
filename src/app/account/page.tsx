@@ -210,7 +210,7 @@ export default function AccountPage() {
     const applyHash = () => {
       const raw = window.location.hash.replace("#", "");
       if (raw === "premium" || raw === "saved" || raw === "history" || raw === "preferences" || raw === "overview") {
-        setActiveTab((raw === "" ? "overview" : (raw as AccountTab)) || "overview");
+        setActiveTab(raw as AccountTab);
       } else if (raw === "") {
         setActiveTab("overview");
       }
