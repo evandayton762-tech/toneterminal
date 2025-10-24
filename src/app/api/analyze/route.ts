@@ -156,11 +156,7 @@ function normalizePlugins(
     return [];
   }
 
-  const fallback = allowedPlugins[0] ?? {
-    name: "Unknown Plugin",
-    type: "Effect",
-    description: "Fallback plugin when the expected catalog is missing.",
-  };
+  const fallback = allowedPlugins[0];
 
   return raw
     .map((entry) => {
@@ -192,13 +188,12 @@ function normalizePlugins(
           ? record.summary
           : "";
 
-      const preset: PluginPreset = {
+      return {
         name: candidate.name,
         type,
         settings,
         comment,
       };
-      return preset;
     })
     .filter((plugin): plugin is PluginPreset => plugin !== null)
     .slice(0, 12);
