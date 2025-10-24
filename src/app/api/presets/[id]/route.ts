@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import {
   PlanGateError,
@@ -22,8 +22,8 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
   value !== null && typeof value === "object" && !Array.isArray(value);
 
 export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   if (!supabaseAdmin) {
     return errorResponse(
@@ -60,6 +60,7 @@ export async function PATCH(
   if (!payload) {
     return errorResponse("Invalid request payload.");
   }
+  const { id } = await context.params;
 
   const updates: Record<string, unknown> = {};
   let featuresUpdate: Record<string, unknown> | null | undefined;
@@ -91,7 +92,7 @@ export async function PATCH(
     const { data: existing, error: fetchError } = await supabaseAdmin
       .from("analysis_presets")
       .select("features")
-      .eq("id", params.id)
+      .eq("id", id)
       .eq("user_id", user.id)
       .maybeSingle();
 
@@ -129,7 +130,7 @@ export async function PATCH(
   const { error: updateError } = await supabaseAdmin
     .from("analysis_presets")
     .update(updates)
-    .eq("id", params.id)
+    .eq("id", id)
     .eq("user_id", user.id);
 
   if (updateError) {
@@ -146,8 +147,8 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   if (!supabaseAdmin) {
     return errorResponse(
@@ -180,10 +181,12 @@ export async function DELETE(
     throw error;
   }
 
+  const { id } = await context.params;
+
   const { error: deleteError } = await supabaseAdmin
     .from("analysis_presets")
     .delete()
-    .eq("id", params.id)
+    .eq("id", id)
     .eq("user_id", user.id);
 
   if (deleteError) {

@@ -70,7 +70,7 @@ export async function POST(request: Request) {
     const origin =
       request.headers.get("origin") ??
       process.env.NEXT_PUBLIC_SITE_URL ??
-      "http://localhost:3000";
+      "https://toneterminal.app";
 
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",

@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import {
   PlanGateError,
@@ -18,7 +18,7 @@ async function ensureLibraryAccess(userId: string) {
   );
 }
 
-async function resolveUser(request: Request) {
+async function resolveUser(request: NextRequest) {
   if (!supabaseAdmin) {
     throw new PlanGateError(
       "Supabase configuration missing. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
@@ -45,12 +45,13 @@ async function resolveUser(request: Request) {
 }
 
 export async function PATCH(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await resolveUser(request);
     await ensureLibraryAccess(user.id);
+    const { id } = await context.params;
 
     const payload = await request.json().catch(() => null);
     const nextName =
@@ -68,7 +69,7 @@ export async function PATCH(
         name: nextName,
         updated_at: new Date().toISOString(),
       })
-      .eq("id", params.id)
+      .eq("id", id)
       .eq("user_id", user.id)
       .select("id, name, created_at, updated_at")
       .single();
@@ -90,17 +91,18 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await resolveUser(request);
     await ensureLibraryAccess(user.id);
+    const { id } = await context.params;
 
     const { error } = await supabaseAdmin!
       .from("analysis_folders")
       .delete()
-      .eq("id", params.id)
+      .eq("id", id)
       .eq("user_id", user.id);
 
     if (error) {

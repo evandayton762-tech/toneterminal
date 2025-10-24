@@ -155,7 +155,7 @@ export default function AccountPage() {
   const [profileSaving, setProfileSaving] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<AccountTab>("overview");
-  const { theme, toggleTheme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const isLight = theme === "light";
 
   const planKey = getNormalizedTier(profile.tier);
