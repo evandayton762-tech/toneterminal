@@ -192,12 +192,13 @@ function normalizePlugins(
           ? record.summary
           : "";
 
-      return {
+      const preset: PluginPreset = {
         name: candidate.name,
         type,
         settings,
         comment,
       };
+      return preset;
     })
     .filter((plugin): plugin is PluginPreset => plugin !== null)
     .slice(0, 12);
