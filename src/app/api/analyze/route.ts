@@ -156,7 +156,11 @@ function normalizePlugins(
     return [];
   }
 
-  const fallback = allowedPlugins[0];
+  const fallback = allowedPlugins[0] ?? {
+    name: "Unknown Plugin",
+    type: "Effect",
+    description: "Fallback plugin when the expected catalog is missing.",
+  };
 
   return raw
     .map((entry) => {
