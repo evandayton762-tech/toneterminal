@@ -102,7 +102,7 @@ function normalizePlugins(raw: unknown): PluginChain["plugins"] {
               .filter((tag) => tag.length > 0)
           : [];
 
-      return {
+      const plugin: PluginChainPlugin = {
         name,
         type,
         comment,
@@ -120,6 +120,7 @@ function normalizePlugins(raw: unknown): PluginChain["plugins"] {
             : undefined,
         tags: rawTags.length ? rawTags : null,
       };
+      return plugin;
     })
     .filter((plugin): plugin is PluginChain["plugins"][number] => plugin !== null);
 }
