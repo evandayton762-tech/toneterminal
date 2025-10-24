@@ -3,6 +3,7 @@ import {
   serializePreset,
   getExporterCoverage,
   type PluginChain,
+  type PluginChainPlugin,
   type PluginIdentifierMap,
   type PluginParameter,
 } from "@/exporters";
