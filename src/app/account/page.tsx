@@ -221,7 +221,8 @@ export default function AccountPage() {
   }, []);
 
   useEffect(() => {
-    if (!user || !supabase) {
+    const client = supabase;
+    if (!user || !client) {
       setProfile((prev) => ({ ...prev, loading: false }));
       setAnalysisHistory((prev) => ({ ...prev, loading: false }));
       setPresetHistory((prev) => ({ ...prev, loading: false }));
@@ -231,6 +232,7 @@ export default function AccountPage() {
     let cancelled = false;
 
     const loadAccountData = async () => {
+      if (!client) return;
       setProfile((prev) => ({ ...prev, loading: true, error: null }));
       setAnalysisHistory((prev) => ({ ...prev, loading: true, error: null }));
       setPresetHistory((prev) => ({ ...prev, loading: true, error: null }));
@@ -238,7 +240,7 @@ export default function AccountPage() {
       const {
         data: { session },
         error,
-      } = await supabase.auth.getSession();
+      } = await client.auth.getSession();
 
       if (error || !session?.access_token) {
         if (!cancelled) {
@@ -337,7 +339,7 @@ export default function AccountPage() {
     return () => {
       cancelled = true;
     };
-  }, [user]);
+  }, [user, supabase]);
 
   useEffect(() => {
     if (!toast) return;
