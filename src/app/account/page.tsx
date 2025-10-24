@@ -339,7 +339,7 @@ export default function AccountPage() {
     return () => {
       cancelled = true;
     };
-  }, [user, supabase]);
+  }, [user]);
 
   useEffect(() => {
     if (!toast) return;
@@ -352,7 +352,7 @@ export default function AccountPage() {
       setProfilePlugins([]);
       return;
     }
-    const firstAllowed = allowedProfileDaws[0] ?? "fl_studio";
+    const firstAllowed = (allowedProfileDaws[0] ?? "fl_studio") as DawId;
     setProfileDaw((prev) =>
       allowedProfileDaws.includes(prev) ? prev : firstAllowed
     );
