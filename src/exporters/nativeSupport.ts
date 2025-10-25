@@ -1,6 +1,7 @@
 import { labelToDawId, dawIdToLabel } from "@/lib/daws";
 import {
   NATIVE_EXPORTER_INFO,
+  NATIVE_EXPORTER_ORDER,
   type NativeExporterKey,
   type NativeExporterMetadata,
 } from "@/data/nativeExporters";

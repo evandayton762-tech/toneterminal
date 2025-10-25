@@ -10,7 +10,7 @@ function xmlEscape(value: string): string {
     .replace(/'/g, "&apos;");
 }
 
-function serializePlugin(plugin: PluginChainPlugin): string {
+function serializePlugin(plugin: PluginChainPlugin, index: number): string {
   const identifier =
     plugin.identifiers?.proTools ??
     plugin.identifiers?.aax ??
@@ -32,7 +32,7 @@ function serializePlugin(plugin: PluginChainPlugin): string {
 
 function buildPreset(chain: PluginChain): string {
   const plugins = sortChainPlugins(chain)
-    .map((plugin) => serializePlugin(plugin))
+    .map((plugin, index) => serializePlugin(plugin, index))
     .join("");
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

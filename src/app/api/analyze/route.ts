@@ -148,32 +148,23 @@ function normalizeSettings(raw: unknown): Record<string, string> {
   return result;
 }
 
-function normalizePlugins(
-  raw: unknown,
-  allowedPlugins: PluginDefinition[]
-): PluginPreset[] {
-  if (!Array.isArray(raw)) {
-    return [];
-  }
+const isPreset = (p: PluginPreset | null): p is PluginPreset => p !== null;
 
-  const fallback = allowedPlugins[0];
+function normalizePlugins(raw: unknown, allowedPlugins: PluginDefinition[]): PluginPreset[] {
+  if (!Array.isArray(raw)) return [];
+
+  const fallback = allowedPlugins[0]; // ok if undefined; we'll bail below
 
   return raw
     .map((entry) => {
-      if (!entry || typeof entry !== "object") {
-        return null;
-      }
+      if (!entry || typeof entry !== "object") return null;
 
       const record = entry as Record<string, unknown>;
       const nameRaw = typeof record.name === "string" ? record.name.trim() : "";
       const candidate =
-        allowedPlugins.find(
-          (plugin) => plugin.name.toLowerCase() === nameRaw.toLowerCase()
-        ) ?? fallback;
+        allowedPlugins.find((p) => p.name.toLowerCase() === nameRaw.toLowerCase()) ?? fallback;
 
-      if (!candidate) {
-        return null;
-      }
+      if (!candidate) return null; // allowedPlugins might be empty
 
       const type =
         typeof record.type === "string" && record.type.trim().length > 0
@@ -188,14 +179,9 @@ function normalizePlugins(
           ? record.summary
           : "";
 
-      return {
-        name: candidate.name,
-        type,
-        settings,
-        comment,
-      };
+      return { name: candidate.name, type, settings, comment };
     })
-    .filter((plugin): plugin is PluginPreset => plugin !== null)
+    .filter(isPreset)            // <-- type guard narrows to PluginPreset[]
     .slice(0, 12);
 }
 

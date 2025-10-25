@@ -1,8 +1,9 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import {
   PlanGateError,
   assertFeature,
+  isPlanGateError,
   resolvePlanContext,
 } from "@/middleware/planGate";
 
@@ -18,7 +19,7 @@ async function ensureLibraryAccess(userId: string) {
   );
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   if (!supabaseAdmin) {
     return errorResponse(
       "Supabase configuration missing. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",
@@ -63,7 +64,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({ items: data ?? [] });
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   if (!supabaseAdmin) {
     return errorResponse(
       "Supabase configuration missing. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.",

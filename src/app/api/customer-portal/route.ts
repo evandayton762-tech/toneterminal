@@ -96,7 +96,7 @@ export async function POST(request: Request) {
     const origin =
       request.headers.get("origin") ??
       process.env.NEXT_PUBLIC_SITE_URL ??
-      "https://toneterminal.app";
+      "http://localhost:3000";
 
     const session = await stripe.billingPortal.sessions.create({
       customer: customerId!,

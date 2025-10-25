@@ -155,7 +155,7 @@ export default function AccountPage() {
   const [profileSaving, setProfileSaving] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<AccountTab>("overview");
-  const { theme, setTheme } = useTheme();
+  const { theme, toggleTheme, setTheme } = useTheme();
   const isLight = theme === "light";
 
   const planKey = getNormalizedTier(profile.tier);
@@ -210,7 +210,7 @@ export default function AccountPage() {
     const applyHash = () => {
       const raw = window.location.hash.replace("#", "");
       if (raw === "premium" || raw === "saved" || raw === "history" || raw === "preferences" || raw === "overview") {
-        setActiveTab(raw as AccountTab);
+        setActiveTab((raw === "" ? "overview" : (raw as AccountTab)) || "overview");
       } else if (raw === "") {
         setActiveTab("overview");
       }
@@ -221,8 +221,7 @@ export default function AccountPage() {
   }, []);
 
   useEffect(() => {
-    const client = supabase;
-    if (!user || !client) {
+    if (!user || !supabase) {
       setProfile((prev) => ({ ...prev, loading: false }));
       setAnalysisHistory((prev) => ({ ...prev, loading: false }));
       setPresetHistory((prev) => ({ ...prev, loading: false }));
@@ -232,7 +231,6 @@ export default function AccountPage() {
     let cancelled = false;
 
     const loadAccountData = async () => {
-      if (!client) return;
       setProfile((prev) => ({ ...prev, loading: true, error: null }));
       setAnalysisHistory((prev) => ({ ...prev, loading: true, error: null }));
       setPresetHistory((prev) => ({ ...prev, loading: true, error: null }));
@@ -240,7 +238,7 @@ export default function AccountPage() {
       const {
         data: { session },
         error,
-      } = await client.auth.getSession();
+      } = await supabase.auth.getSession();
 
       if (error || !session?.access_token) {
         if (!cancelled) {
@@ -352,7 +350,7 @@ export default function AccountPage() {
       setProfilePlugins([]);
       return;
     }
-    const firstAllowed = (allowedProfileDaws[0] ?? "fl_studio") as DawId;
+    const firstAllowed = allowedProfileDaws[0] ?? "fl_studio";
     setProfileDaw((prev) =>
       allowedProfileDaws.includes(prev) ? prev : firstAllowed
     );
