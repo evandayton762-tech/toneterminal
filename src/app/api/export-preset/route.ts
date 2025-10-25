@@ -236,13 +236,9 @@ export async function POST(request: Request) {
     });
 
     const coverage = getExporterCoverage(dawId);
-    const binaryBody =
-      preset.data instanceof Uint8Array
-        ? preset.data
-        : new Uint8Array(preset.data);
-    const bodyBlob = new Blob([binaryBody], { type: preset.mime });
+    const binaryBody = new Uint8Array(preset.data);
 
-    return new Response(bodyBlob, {
+    return new Response(binaryBody, {
       status: 200,
       headers: {
         "Content-Type": preset.mime,
