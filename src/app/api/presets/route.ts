@@ -60,6 +60,8 @@ export async function GET(request: Request) {
     throw error;
   }
 
+  const client = supabaseAdmin;
+
   const BASE_COLUMNS =
     "id, daw, clip_start, clip_end, duration, plugins, created_at, folder_id";
   const OPTIONAL_COLUMNS = ["summary", "tags", "favorite", "features"];
@@ -69,7 +71,7 @@ export async function GET(request: Request) {
   const folderFilter = url.searchParams.get("folderId");
 
   const selectPresets = async (columns: string) => {
-    const query = supabaseAdmin
+    const query = client
       .from("analysis_presets")
       .select(columns)
       .eq("user_id", user.id)
