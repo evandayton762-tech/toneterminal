@@ -12,6 +12,13 @@ export type Profile = {
 const DEFAULT_TIER = "free";
 export const DEFAULT_CREDITS = getPlan(DEFAULT_TIER).generationsPerMonth;
 
+const clampCredits = (planId: string, credits: unknown): number => {
+  const plan = getPlan(planId);
+  const numeric =
+    typeof credits === "number" && Number.isFinite(credits) ? credits : plan.generationsPerMonth;
+  return Math.max(0, Math.min(plan.generationsPerMonth, numeric));
+};
+
 const ensureAdmin = () => {
   if (!supabaseAdmin) {
     throw new Error(
@@ -53,9 +60,7 @@ export async function getOrCreateProfile(userId: string): Promise<Profile> {
 
   if (data) {
     const normalizedTier = normalizePlanId(data.tier);
-    const plan = getPlan(normalizedTier);
-    const credits =
-      typeof data.credits === "number" ? data.credits : plan.generationsPerMonth;
+    const credits = clampCredits(normalizedTier, data.credits);
     return {
       ...data,
       stripe_customer_id: data.stripe_customer_id ?? null,
@@ -104,6 +109,7 @@ export async function getOrCreateProfile(userId: string): Promise<Profile> {
   return {
     ...inserted,
     stripe_customer_id: inserted.stripe_customer_id ?? null,
+    credits: clampCredits(DEFAULT_TIER, inserted.credits),
   };
 }
 
@@ -123,7 +129,8 @@ export async function decrementCredits(userId: string): Promise<Profile> {
   }
 
   const plan = getPlan(current.tier);
-  const nextCredits = Math.max(0, (current.credits ?? plan.generationsPerMonth) - 1);
+  const currentCredits = clampCredits(plan.id, current.credits);
+  const nextCredits = Math.max(0, currentCredits - 1);
 
   const { data: updated, error: updateError } = await client
     .from("profiles")
@@ -160,7 +167,11 @@ export async function updateProfileCredits(
     );
   }
 
-  return data;
+  return {
+    ...data,
+    credits: clampCredits(data.tier, data.credits),
+    stripe_customer_id: data.stripe_customer_id ?? null,
+  };
 }
 
 export async function updateProfileTier(
@@ -196,7 +207,7 @@ export async function updateProfileTier(
   return {
     ...data,
     tier: normalizedTier,
-    credits: payload.credits ?? targetPlan.generationsPerMonth,
+    credits: clampCredits(normalizedTier, payload.credits),
     stripe_customer_id: data.stripe_customer_id ?? null,
   };
 }

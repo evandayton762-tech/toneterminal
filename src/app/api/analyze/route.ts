@@ -26,6 +26,12 @@ import {
 import type { DawId } from "@/data/daws";
 
 export const runtime = "nodejs";
+export const config = {
+  api: {
+    bodyParser: false,
+    sizeLimit: "32mb",
+  },
+};
 const CLIP_SECONDS = 15;
 
 type PluginDefinition = {
