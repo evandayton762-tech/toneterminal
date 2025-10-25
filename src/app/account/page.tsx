@@ -227,7 +227,9 @@ export default function AccountPage() {
   }, []);
 
   useEffect(() => {
-    if (!user || !supabase) {
+    const client = supabase;
+
+    if (!user || !client) {
       setProfile((prev) => ({ ...prev, loading: false }));
       setAnalysisHistory((prev) => ({ ...prev, loading: false }));
       setPresetHistory((prev) => ({ ...prev, loading: false }));
@@ -244,7 +246,7 @@ export default function AccountPage() {
       const {
         data: { session },
         error,
-      } = await supabase.auth.getSession();
+      } = await client.auth.getSession();
 
       if (error || !session?.access_token) {
         if (!cancelled) {
