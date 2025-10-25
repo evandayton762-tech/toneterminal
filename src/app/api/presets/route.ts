@@ -100,23 +100,19 @@ export async function GET(request: Request) {
     fetchError = fallback.error;
     data = Array.isArray(fallback.data)
       ? fallback.data.map((item) => {
-          if (item && typeof item === "object" && !Array.isArray(item)) {
-            return {
-              ...item,
-              summary: null,
-              tags: [],
-              favorite: false,
-              features: null,
-              folder_id: null,
-            } satisfies Record<string, unknown>;
-          }
-          return {
+          const base: Record<string, unknown> = {
             summary: null,
             tags: [],
             favorite: false,
             features: null,
             folder_id: null,
-          } satisfies Record<string, unknown>;
+          };
+
+          if (item && typeof item === "object" && !Array.isArray(item)) {
+            return { ...(item as Record<string, unknown>), ...base };
+          }
+
+          return base;
         })
       : [];
   }
