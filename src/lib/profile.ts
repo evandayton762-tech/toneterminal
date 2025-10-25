@@ -61,6 +61,13 @@ export async function getOrCreateProfile(userId: string): Promise<Profile> {
   if (data) {
     const normalizedTier = normalizePlanId(data.tier);
     const credits = clampCredits(normalizedTier, data.credits);
+    const needsSync = normalizedTier !== data.tier || credits !== data.credits;
+    if (needsSync) {
+      await client
+        .from("profiles")
+        .update({ tier: normalizedTier, credits })
+        .eq("id", userId);
+    }
     return {
       ...data,
       stripe_customer_id: data.stripe_customer_id ?? null,
