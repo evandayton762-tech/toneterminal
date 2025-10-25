@@ -155,7 +155,7 @@ export default function AccountPage() {
   const [profileSaving, setProfileSaving] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<AccountTab>("overview");
-  const { theme, toggleTheme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const isLight = theme === "light";
 
   const planKey = getNormalizedTier(profile.tier);
@@ -209,8 +209,14 @@ export default function AccountPage() {
     if (typeof window === "undefined") return;
     const applyHash = () => {
       const raw = window.location.hash.replace("#", "");
-      if (raw === "premium" || raw === "saved" || raw === "history" || raw === "preferences" || raw === "overview") {
-        setActiveTab((raw === "" ? "overview" : (raw as AccountTab)) || "overview");
+      if (
+        raw === "premium" ||
+        raw === "saved" ||
+        raw === "history" ||
+        raw === "preferences" ||
+        raw === "overview"
+      ) {
+        setActiveTab(raw as AccountTab);
       } else if (raw === "") {
         setActiveTab("overview");
       }
