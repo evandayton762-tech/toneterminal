@@ -276,18 +276,6 @@ export default function LibraryPage() {
   const canAccessLibrary = currentPlan.canAccessLibrary;
   const canExportPreset = currentPlan.canExportPreset;
 
-  useEffect(() => {
-    if (!user || !supabase) {
-      setFolders([]);
-      return;
-    }
-    if (!canAccessLibrary) {
-      setFolders([]);
-      return;
-    }
-    void loadFolders();
-  }, [user, canAccessLibrary, loadFolders]);
-
   const toggleFavorite = async (id: string) => {
     const target = presets.items.find((item) => item.id === id);
     if (!target) return;
@@ -489,6 +477,18 @@ export default function LibraryPage() {
       setFoldersLoading(false);
     }
   }, [withSessionHeaders]);
+
+  useEffect(() => {
+    if (!user || !supabase) {
+      setFolders([]);
+      return;
+    }
+    if (!canAccessLibrary) {
+      setFolders([]);
+      return;
+    }
+    void loadFolders();
+  }, [user, canAccessLibrary, loadFolders]);
 
   const handleCreateFolder = useCallback(async () => {
     const name = window.prompt("Folder name");
