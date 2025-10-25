@@ -23,6 +23,14 @@ const readFeatureString = (
   return trimmed.length > 0 ? trimmed : null;
 };
 
+type PresetRow = Record<string, unknown> & {
+  summary?: unknown;
+  tags?: unknown;
+  favorite?: unknown;
+  features?: unknown;
+  folder_id?: unknown;
+};
+
 export async function GET(request: Request) {
   if (!supabaseAdmin) {
     return buildError(
@@ -87,7 +95,16 @@ export async function GET(request: Request) {
     return query;
   };
 
-  let { data, error: fetchError } = await selectPresets(FULL_COLUMNS);
+  const { data, error: initialError } = await selectPresets(FULL_COLUMNS);
+  let fetchError = initialError;
+  let rows: PresetRow[] = Array.isArray(data)
+    ? data
+        .filter(
+          (item): item is PresetRow =>
+            Boolean(item) && typeof item === "object" && !Array.isArray(item)
+        )
+        .map((item) => item as PresetRow)
+    : [];
 
   const missingColumn =
     fetchError?.message &&
@@ -98,9 +115,9 @@ export async function GET(request: Request) {
   if (missingColumn) {
     const fallback = await selectPresets(BASE_COLUMNS);
     fetchError = fallback.error;
-    data = Array.isArray(fallback.data)
+    rows = Array.isArray(fallback.data)
       ? fallback.data.map((item) => {
-          const base: Record<string, unknown> = {
+          const base: PresetRow = {
             summary: null,
             tags: [],
             favorite: false,
@@ -109,7 +126,7 @@ export async function GET(request: Request) {
           };
 
           if (item && typeof item === "object" && !Array.isArray(item)) {
-            return { ...(item as Record<string, unknown>), ...base };
+            return { ...(item as PresetRow), ...base };
           }
 
           return base;
@@ -125,12 +142,13 @@ export async function GET(request: Request) {
   }
 
   const normalized =
-    Array.isArray(data) && data.length > 0
-      ? data.map((item) => {
-          const features = isRecord(item.features) ? item.features : null;
+    rows.length > 0
+      ? rows.map((item) => {
+          const record = item as PresetRow;
+          const features = isRecord(record.features) ? record.features : null;
           const directSummary =
-            typeof item.summary === "string" && item.summary.trim().length > 0
-              ? item.summary.trim()
+            typeof record.summary === "string" && record.summary.trim().length > 0
+              ? record.summary.trim()
               : null;
           const fallbackSummary =
             directSummary ??
@@ -138,17 +156,18 @@ export async function GET(request: Request) {
             readFeatureString(features, "summary");
 
           return {
-            ...item,
-            tags: Array.isArray(item.tags) ? item.tags : [],
-            favorite: typeof item.favorite === "boolean" ? item.favorite : false,
+            ...record,
+            tags: Array.isArray(record.tags) ? record.tags : [],
+            favorite:
+              typeof record.favorite === "boolean" ? record.favorite : false,
             summary:
               fallbackSummary !== null
                 ? fallbackSummary
-                : item.summary === null
+                : record.summary === null
                 ? null
                 : undefined,
             features,
-            folder_id: item.folder_id ?? null,
+            folder_id: record.folder_id ?? null,
           };
         })
       : [];
