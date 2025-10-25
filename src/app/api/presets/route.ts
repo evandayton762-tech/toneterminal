@@ -99,11 +99,12 @@ export async function GET(request: Request) {
   let fetchError = initialError;
   let rows: PresetRow[] = Array.isArray(data)
     ? data
-        .filter(
-          (item): item is PresetRow =>
-            Boolean(item) && typeof item === "object" && !Array.isArray(item)
+        .map((item) =>
+          item && typeof item === "object" && !Array.isArray(item)
+            ? (item as PresetRow)
+            : null
         )
-        .map((item) => item as PresetRow)
+        .filter((item): item is PresetRow => item !== null)
     : [];
 
   const missingColumn =
