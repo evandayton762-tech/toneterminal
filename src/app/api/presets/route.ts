@@ -99,14 +99,16 @@ export async function GET(request: Request) {
     const fallback = await selectPresets(BASE_COLUMNS);
     fetchError = fallback.error;
     data = Array.isArray(fallback.data)
-      ? fallback.data.map((item) => ({
-          ...item,
-          summary: null,
-          tags: [],
-          favorite: false,
-          features: null,
-          folder_id: null,
-        }))
+      ? fallback.data
+          .filter((item): item is Record<string, unknown> => item !== null && typeof item === "object" && !Array.isArray(item))
+          .map((item) => ({
+            ...item,
+            summary: null,
+            tags: [],
+            favorite: false,
+            features: null,
+            folder_id: null,
+          }))
       : [];
   }
 
