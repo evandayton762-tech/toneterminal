@@ -1,35 +1,51 @@
 jest.mock("fluent-ffmpeg", () => {
-  const factory = jest.fn(() => {
-    const api: Record<string, any> = {};
-    api.audioFrequency = jest.fn().mockReturnValue(api);
-    api.audioChannels = jest.fn().mockReturnValue(api);
-    api.audioCodec = jest.fn().mockReturnValue(api);
-    api.format = jest.fn().mockReturnValue(api);
-    api.duration = jest.fn().mockReturnValue(api);
-    api.output = jest.fn().mockImplementation((path: string) => {
-      api.__targetPath = path;
-      return api;
+  type Handler = () => void;
+  type MockChain = {
+    audioFrequency: jest.Mock<MockChain, []>;
+    audioChannels: jest.Mock<MockChain, []>;
+    audioCodec: jest.Mock<MockChain, []>;
+    format: jest.Mock<MockChain, []>;
+    duration: jest.Mock<MockChain, []>;
+    output: jest.Mock<MockChain, [string]>;
+    on: jest.Mock<MockChain, [string, Handler]>;
+    run: jest.Mock<void, []>;
+    __targetPath?: string;
+    __endHandler?: Handler;
+    __errorHandler?: Handler;
+  };
+
+  const createChain = (): MockChain => {
+    const chain = {} as MockChain;
+    const returnSelf = () => chain;
+
+    chain.audioFrequency = jest.fn(returnSelf);
+    chain.audioChannels = jest.fn(returnSelf);
+    chain.audioCodec = jest.fn(returnSelf);
+    chain.format = jest.fn(returnSelf);
+    chain.duration = jest.fn(returnSelf);
+    chain.output = jest.fn((path: string) => {
+      chain.__targetPath = path;
+      return chain;
     });
-    api.on = jest.fn().mockImplementation((event: string, handler: () => void) => {
+    chain.on = jest.fn((event: string, handler: Handler) => {
       if (event === "end") {
-        api.__endHandler = handler;
+        chain.__endHandler = handler;
+      } else if (event === "error") {
+        chain.__errorHandler = handler;
       }
-      if (event === "error") {
-        api.__errorHandler = handler;
-      }
-      return api;
+      return chain;
     });
-    api.run = jest.fn().mockImplementation(() => {
-      if (typeof api.__targetPath === "string") {
-        const { writeFileSync } = require("fs");
-        writeFileSync(api.__targetPath, Buffer.alloc(1024));
+    chain.run = jest.fn(() => {
+      if (typeof chain.__targetPath === "string") {
+        writeFileSync(chain.__targetPath, Buffer.alloc(1024));
       }
-      if (typeof api.__endHandler === "function") {
-        api.__endHandler();
-      }
+      chain.__endHandler?.();
     });
-    return api;
-  });
+
+    return chain;
+  };
+
+  const factory = jest.fn(() => createChain());
   factory.setFfmpegPath = jest.fn();
   return factory;
 });
@@ -148,7 +164,7 @@ jest.mock("essentia.js", () => {
 });
 
 import { extractMetrics } from "../src/workers/metrics.worker";
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 
 describe("metrics worker stub", () => {
