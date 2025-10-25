@@ -247,7 +247,8 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (!user || !supabase) {
+    const client = supabase;
+    if (!user || !client) {
       setPlanTier("free");
       return;
     }
@@ -258,7 +259,7 @@ export default function Home() {
       const {
         data: { session },
         error,
-      } = await supabase.auth.getSession();
+      } = await client.auth.getSession();
 
       if (error || !session?.access_token) {
         if (!cancelled) {
