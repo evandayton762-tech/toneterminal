@@ -168,7 +168,7 @@ export default function AccountPage() {
   const currentPlan = getPlan(planKey);
   const premiumEnabled = currentPlan.canUsePremiumInventory;
   const canExportPreset = currentPlan.canExportPreset;
-  const allowedProfileDaws = currentPlan.allowedDAWs;
+  const allowedProfileDaws = currentPlan.allowedDAWs as readonly DawId[];
   const premiumOptions = useMemo(
     () => pluginsForDAW(profileDaw),
     [profileDaw]
@@ -358,7 +358,7 @@ export default function AccountPage() {
       setProfilePlugins([]);
       return;
     }
-    const firstAllowed = allowedProfileDaws[0] ?? "fl_studio";
+    const firstAllowed = (allowedProfileDaws[0] ?? "fl_studio") as DawId;
     setProfileDaw((prev) =>
       allowedProfileDaws.includes(prev) ? prev : firstAllowed
     );
