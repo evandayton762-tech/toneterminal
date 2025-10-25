@@ -240,12 +240,9 @@ export async function POST(request: Request) {
       preset.data instanceof Uint8Array
         ? preset.data
         : new Uint8Array(preset.data);
-    const arrayBuffer = binaryBody.buffer.slice(
-      binaryBody.byteOffset,
-      binaryBody.byteOffset + binaryBody.byteLength
-    );
+    const bodyBlob = new Blob([binaryBody], { type: preset.mime });
 
-    return new Response(arrayBuffer, {
+    return new Response(bodyBlob, {
       status: 200,
       headers: {
         "Content-Type": preset.mime,
