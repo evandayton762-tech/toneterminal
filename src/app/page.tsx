@@ -19,6 +19,8 @@ import WaveSurfer from "wavesurfer.js";
 import RegionsPlugin, {
   type Region,
 } from "wavesurfer.js/dist/plugins/regions.esm.js";
+type RegionsPluginFactory = ReturnType<typeof RegionsPlugin.create>;
+type RegionsPluginInstance = ReturnType<RegionsPluginFactory>;
 import { useRouter } from "next/navigation";
 
 const MAX_CLIP_SECONDS = 15;
@@ -40,6 +42,16 @@ type DetectedSong = {
   lyrics: string | null;
 };
 
+type SampleTrack = {
+  id: string;
+  title: string;
+  artist: string;
+  src: string;
+  cover: string;
+  initials: string;
+  gradientClass: string;
+};
+
 const SAMPLE_TRACKS = [
   {
     id: "sample-frank-ocean",
@@ -48,6 +60,7 @@ const SAMPLE_TRACKS = [
     src: "/audio/Eyes Like Sky - Frank Ocean.mp3",
     cover: "/assets/eyeslikesky.png",
     initials: "FO",
+    gradientClass: "from-sky-500/40 to-indigo-500/60",
   },
   {
     id: "sample-ceelo",
@@ -56,6 +69,7 @@ const SAMPLE_TRACKS = [
     src: "/audio/I\u2019m a Fool (feat. CeeLo Green).mp3",
     cover: "/assets/imafool.png",
     initials: "CG",
+    gradientClass: "from-emerald-500/40 to-teal-500/60",
   },
   {
     id: "sample-roddy-ricch",
@@ -64,6 +78,7 @@ const SAMPLE_TRACKS = [
     src: "/audio/Throw My Money Everywhere.mp3",
     cover: "/assets/goodassjob.png",
     initials: "RR",
+    gradientClass: "from-amber-500/40 to-orange-500/60",
   },
   {
     id: "sample-the-weeknd",
@@ -72,8 +87,9 @@ const SAMPLE_TRACKS = [
     src: "/audio/Try Me (feat. Quavo).mp3",
     cover: "/assets/MyDearMelancholy.png",
     initials: "TW",
+    gradientClass: "from-rose-500/40 to-purple-500/60",
   },
-] as const;
+] satisfies readonly SampleTrack[];
 
 const formatSeconds = (value: number) => {
   const clamped = Math.max(value, 0);
@@ -430,14 +446,15 @@ const selectedPremiumDetails = useMemo(
       normalize: true,
     });
 
+    const regionsPluginFactory = RegionsPlugin.create({
+      dragSelection: {
+        color: "rgba(255,255,255,0.1)",
+      },
+    });
+
     const regions = ws.registerPlugin(
-      RegionsPlugin.create({
-        dragSelection: {
-          color: "rgba(255,255,255,0.1)",
-          maxLength: MAX_CLIP_SECONDS,
-        },
-      })
-    );
+      regionsPluginFactory as unknown as Parameters<typeof ws.registerPlugin>[0]
+    ) as unknown as RegionsPluginInstance;
 
     ws.on("play", () => setIsPlaying(true));
     ws.on("pause", () => setIsPlaying(false));
@@ -1142,7 +1159,9 @@ const selectedPremiumDetails = useMemo(
 
                 <button
                   type="button"
-                  onClick={handleAnalyze}
+                  onClick={() => {
+                    void handleAnalyze();
+                  }}
                   className="terminal-button self-start rounded-full border border-white/30 px-6 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:border-white/60 hover:bg-white/5 disabled:cursor-not-allowed disabled:border-white/10 disabled:text-white/40"
                   disabled={!user || !file || !clipRange || isAnalyzing}
                 >

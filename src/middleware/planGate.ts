@@ -75,7 +75,7 @@ export function assertDAWAllowed(plan: ReturnType<typeof getPlan>, dawId: string
   if (BYPASS_PLAN_GATES) {
     return;
   }
-  if (plan.allowedDAWs.includes(dawId as (typeof plan.allowedDAWs)[number])) {
+  if ((plan.allowedDAWs as readonly string[]).includes(dawId)) {
     return;
   }
   const friendlyName = dawIdToLabel(dawId);

@@ -28,7 +28,7 @@ export async function getPluginProfile(
 ): Promise<PluginProfileRow | null> {
   const client = ensureAdmin();
   const { data, error } = await client
-    .from<PluginProfileRow>(TABLE)
+    .from(TABLE)
     .select("id, user_id, daw, plugins, created_at, updated_at")
     .eq("user_id", userId)
     .eq("daw", daw)
@@ -38,7 +38,7 @@ export async function getPluginProfile(
     throw new Error(`Failed to load plugin profile: ${error.message}`);
   }
 
-  return data ?? null;
+  return (data as PluginProfileRow | null) ?? null;
 }
 
 export async function upsertPluginProfile(
@@ -50,7 +50,7 @@ export async function upsertPluginProfile(
   const sanitized = sanitizePluginSelection(daw, plugins);
 
   const { data, error } = await client
-    .from<PluginProfileRow>(TABLE)
+    .from(TABLE)
     .upsert(
       {
         user_id: userId,
@@ -69,7 +69,7 @@ export async function upsertPluginProfile(
     );
   }
 
-  return data;
+  return data as PluginProfileRow;
 }
 
 export async function deletePluginProfile(userId: string, daw: DawId): Promise<void> {

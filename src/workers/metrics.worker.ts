@@ -78,6 +78,13 @@ function median(values: number[]): number {
   return sorted[mid];
 }
 
+function toNumberArray(values: unknown): number[] {
+  if (!Array.isArray(values)) return [];
+  return values.filter(
+    (value): value is number => typeof value === "number" && Number.isFinite(value)
+  );
+}
+
 function clampFinite(value: number): number {
   if (!Number.isFinite(value)) return 0;
   return value;
@@ -256,14 +263,14 @@ export async function extractMetrics(
 
     const spectralRolloffVector = spectral.spectral_rolloff;
     const spectralRolloffValues = spectralRolloffVector
-      ? Array.from(essentia.vectorToArray(spectralRolloffVector))
+      ? toNumberArray(Array.from(essentia.vectorToArray(spectralRolloffVector)))
       : [];
     const spectralRolloffHz = clampFinite(mean(spectralRolloffValues));
 
     const pitchSalienceVector =
       spectral.pitch_salience ?? spectral.pitch_instantaneous_confidence;
     const pitchSalienceValues = pitchSalienceVector
-      ? Array.from(essentia.vectorToArray(pitchSalienceVector))
+      ? toNumberArray(Array.from(essentia.vectorToArray(pitchSalienceVector)))
       : [];
     const harmonicToNoiseRatio = clampFinite(mean(pitchSalienceValues));
 
@@ -281,7 +288,9 @@ export async function extractMetrics(
       if (!frame) continue;
       const windowed = essentia.Windowing(frame, true, FRAME_SIZE, "hann");
       const spectrumFrame = essentia.Spectrum(windowed.frame);
-      const spectrumValues = essentia.vectorToArray(spectrumFrame.spectrum);
+      const spectrumValues = toNumberArray(
+        Array.from(essentia.vectorToArray(spectrumFrame.spectrum))
+      );
       const limit = Math.min(aggregatedSpectrum.length, spectrumValues.length);
       for (let j = 0; j < limit; j += 1) {
         aggregatedSpectrum[j] += spectrumValues[j] ?? 0;
@@ -310,10 +319,10 @@ export async function extractMetrics(
         TARGET_SAMPLE_RATE
       );
       const peakFrequencies = peaks?.frequencies
-        ? Array.from(essentia.vectorToArray(peaks.frequencies))
+        ? toNumberArray(Array.from(essentia.vectorToArray(peaks.frequencies)))
         : [];
       const peakMagnitudes = peaks?.magnitudes
-        ? Array.from(essentia.vectorToArray(peaks.magnitudes))
+        ? toNumberArray(Array.from(essentia.vectorToArray(peaks.magnitudes)))
         : [];
 
       formantFrequencies = peakFrequencies

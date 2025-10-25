@@ -65,7 +65,7 @@ export async function transcribe15s(
     const fileSource = await OpenAI.toFile(
       buffer,
       fileName,
-      contentType ? { contentType } : undefined
+      contentType ? { type: contentType } : undefined
     );
 
     const response = await openai.audio.transcriptions.create({

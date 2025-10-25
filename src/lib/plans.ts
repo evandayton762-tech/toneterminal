@@ -1,7 +1,5 @@
-export type PlanId = keyof typeof PLANS;
-
-type PlanDefinition = {
-  id: PlanId;
+type BasePlanDefinition = {
+  id: string;
   priceMonthlyUSD: number;
   generationsPerMonth: number;
   allowedDAWs: readonly string[];
@@ -68,7 +66,10 @@ export const PLANS = {
     canAccessLibrary: true,
     priorityProcessing: true,
   },
-} as const satisfies Record<string, PlanDefinition>;
+} as const satisfies Record<string, BasePlanDefinition>;
+
+export type PlanId = keyof typeof PLANS;
+type PlanDefinition = (typeof PLANS)[PlanId];
 
 export const PLAN_IDS = Object.keys(PLANS) as PlanId[];
 

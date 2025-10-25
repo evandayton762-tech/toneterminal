@@ -32,7 +32,9 @@ function useCredits(enabled: boolean) {
       return;
     }
 
-    if (!supabase) {
+    const client = supabase;
+
+    if (!client) {
       setState({
         loading: false,
         error:
@@ -50,7 +52,7 @@ function useCredits(enabled: boolean) {
         const {
           data: { session },
           error,
-        } = await supabase.auth.getSession();
+        } = await client.auth.getSession();
 
         if (error) {
           throw new Error(error.message);

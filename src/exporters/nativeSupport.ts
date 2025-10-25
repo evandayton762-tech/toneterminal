@@ -5,6 +5,8 @@ import {
   type NativeExporterMetadata,
 } from "@/data/nativeExporters";
 
+export type { NativeExporterKey, NativeExporterMetadata };
+
 export const NATIVE_EXPORTERS: Record<NativeExporterKey, NativeExporterMetadata> = NATIVE_EXPORTER_INFO;
 
 export function resolveNativeExporterKey(daw: string): NativeExporterKey | null {

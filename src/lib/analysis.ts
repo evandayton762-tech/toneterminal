@@ -85,14 +85,30 @@ export async function getRecentAnalyses(userId: string, limit = 10) {
   const columnsWithoutSummary =
     "id, daw, clip_start, clip_end, duration, plugins, created_at";
 
-  const query = supabaseAdmin
+  const mapRows = (
+    items: unknown[] | null,
+    defaults: Partial<AnalysisRecord> = {}
+  ): AnalysisRecord[] => {
+    if (!Array.isArray(items)) return [];
+    return items
+      .filter(
+        (item): item is Record<string, unknown> =>
+          Boolean(item) && typeof item === "object" && !Array.isArray(item)
+      )
+      .map((item) => ({ ...(item as Record<string, unknown>), ...defaults }))
+      .map((item) => item as AnalysisRecord);
+  };
+
+  const primaryQuery = supabaseAdmin
     .from("analyses")
     .select(columnsWithSummary)
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(limit);
 
-  let { data, error } = await query;
+  const { data, error: primaryError } = await primaryQuery;
+  let error = primaryError;
+  let rows = mapRows(data);
 
   if (error?.message && error.message.toLowerCase().includes("features")) {
     const fallbackQuery = supabaseAdmin
@@ -101,7 +117,9 @@ export async function getRecentAnalyses(userId: string, limit = 10) {
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(limit);
-    ({ data, error } = await fallbackQuery);
+    const fallback = await fallbackQuery;
+    error = fallback.error;
+    rows = mapRows(fallback.data, { features: null });
   }
 
   if (error?.message && error.message.toLowerCase().includes("summary")) {
@@ -111,12 +129,14 @@ export async function getRecentAnalyses(userId: string, limit = 10) {
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(limit);
-    ({ data, error } = await fallbackQuery);
+    const fallback = await fallbackQuery;
+    error = fallback.error;
+    rows = mapRows(fallback.data, { summary: null, features: null });
   }
 
-  if (error || !data) {
+  if (error) {
     return [];
   }
 
-  return data as AnalysisRecord[];
+  return rows;
 }

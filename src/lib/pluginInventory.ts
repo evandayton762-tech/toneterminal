@@ -4,6 +4,7 @@ import catalog from "@/data/premiumPlugins.json";
 export type Platform = "mac" | "win";
 
 type PremiumPlugin = (typeof catalog)[number];
+type PluginFormat = PremiumPlugin["formats"][number];
 
 export function isValidPluginSlug(slug: string): boolean {
   return catalog.some((plugin) => plugin.slug === slug);
@@ -22,7 +23,9 @@ export function pluginsForDAW(
     return [];
   }
 
-  const allowedFormats = new Set(daw.formats);
+  const allowedFormats = new Set<PluginFormat>(
+    (daw.formats as readonly PluginFormat[]) ?? []
+  );
   const allowedOS = platform ? new Set([platform]) : new Set(daw.os);
 
   return catalog.filter((plugin) => {
