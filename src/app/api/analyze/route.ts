@@ -148,41 +148,52 @@ function normalizeSettings(raw: unknown): Record<string, string> {
   return result;
 }
 
-const isPreset = (p: PluginPreset | null): p is PluginPreset => p !== null;
-
 function normalizePlugins(raw: unknown, allowedPlugins: PluginDefinition[]): PluginPreset[] {
-  if (!Array.isArray(raw)) return [];
+  if (!Array.isArray(raw) || allowedPlugins.length === 0) {
+    return [];
+  }
 
-  const fallback = allowedPlugins[0]; // ok if undefined; we'll bail below
+  const fallback = allowedPlugins[0];
+  const resolved: PluginPreset[] = [];
 
-  return raw
-    .map((entry) => {
-      if (!entry || typeof entry !== "object") return null;
+  for (const entry of raw) {
+    if (!entry || typeof entry !== "object") continue;
 
-      const record = entry as Record<string, unknown>;
-      const nameRaw = typeof record.name === "string" ? record.name.trim() : "";
-      const candidate =
-        allowedPlugins.find((p) => p.name.toLowerCase() === nameRaw.toLowerCase()) ?? fallback;
+    const record = entry as Record<string, unknown>;
+    const nameRaw = typeof record.name === "string" ? record.name.trim() : "";
+    const candidate =
+      allowedPlugins.find(
+        (plugin) => plugin.name.toLowerCase() === nameRaw.toLowerCase()
+      ) ?? fallback;
 
-      if (!candidate) return null; // allowedPlugins might be empty
+    if (!candidate) continue;
 
-      const type =
-        typeof record.type === "string" && record.type.trim().length > 0
-          ? record.type.trim()
-          : candidate.type;
+    const type =
+      typeof record.type === "string" && record.type.trim().length > 0
+        ? record.type.trim()
+        : candidate.type;
 
-      const settings = normalizeSettings(record.settings);
-      const comment =
-        typeof record.comment === "string"
-          ? record.comment
-          : typeof record.summary === "string"
-          ? record.summary
-          : "";
+    const settings = normalizeSettings(record.settings);
+    const comment =
+      typeof record.comment === "string"
+        ? record.comment
+        : typeof record.summary === "string"
+        ? record.summary
+        : "";
 
-      return { name: candidate.name, type, settings, comment };
-    })
-    .filter(isPreset)            // <-- type guard narrows to PluginPreset[]
-    .slice(0, 12);
+    resolved.push({
+      name: candidate.name,
+      type,
+      settings,
+      comment,
+    });
+
+    if (resolved.length >= 12) {
+      break;
+    }
+  }
+
+  return resolved;
 }
 
 export async function POST(request: Request) {
