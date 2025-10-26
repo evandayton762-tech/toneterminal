@@ -654,6 +654,12 @@ const selectedPremiumDetails = useMemo(
           : typeof creditsPayload.credits === "number"
           ? creditsPayload.credits
           : null;
+      const nextTier =
+        typeof payload.tier === "string"
+          ? payload.tier
+          : typeof creditsPayload.tier === "string"
+          ? creditsPayload.tier
+          : null;
 
       if (premiumEnabled) {
         const validSlugs = new Set(premiumOptions.map((plugin) => plugin.slug));
@@ -742,6 +748,13 @@ const selectedPremiumDetails = useMemo(
         features: (payload.features ?? null) as Record<string, unknown> | null,
         song: songData,
       });
+      if (typeof remainingCredits === "number") {
+        window.dispatchEvent(
+          new CustomEvent("credits-updated", {
+            detail: { remaining: remainingCredits, tier: nextTier },
+          })
+        );
+      }
       if (ignoreSongNextRun) {
         setIgnoreSongNextRun(false);
       }

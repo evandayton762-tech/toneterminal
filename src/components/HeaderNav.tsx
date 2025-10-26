@@ -15,6 +15,11 @@ type CreditsState = {
   tier: string | null;
 };
 
+type CreditsUpdatedDetail = {
+  remaining?: number | null;
+  tier?: string | null;
+};
+
 const BUTTON_CLASS =
   "terminal-button rounded-full border border-white/30 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white transition hover:border-sky-400/70 hover:bg-white/5 active:shadow-inner active:bg-white/10";
 
@@ -103,6 +108,33 @@ function useCredits(enabled: boolean) {
 
     return () => {
       cancelled = true;
+    };
+  }, [enabled]);
+
+  useEffect(() => {
+    if (!enabled) return;
+    const handleCreditsUpdated = (event: Event) => {
+      const detail =
+        (event as CustomEvent<CreditsUpdatedDetail>).detail ?? undefined;
+      if (!detail) return;
+      setState((prev) => ({
+        ...prev,
+        remaining:
+          typeof detail.remaining === "number" || detail.remaining === null
+            ? detail.remaining
+            : prev.remaining,
+        tier:
+          typeof detail.tier === "string" || detail.tier === null
+            ? detail.tier
+            : prev.tier,
+      }));
+    };
+    window.addEventListener("credits-updated", handleCreditsUpdated as EventListener);
+    return () => {
+      window.removeEventListener(
+        "credits-updated",
+        handleCreditsUpdated as EventListener
+      );
     };
   }, [enabled]);
 
