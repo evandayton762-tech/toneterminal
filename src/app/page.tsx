@@ -100,7 +100,12 @@ const getAudioContextConstructor = (): AudioContextConstructor => {
   const win = window as Window & {
     webkitAudioContext?: AudioContextConstructor;
   };
-  if (win.AudioContext) return win.AudioContext;
+  const audioContextCtor = (win as unknown as {
+    AudioContext?: AudioContextConstructor;
+  }).AudioContext;
+  if (typeof audioContextCtor === "function") {
+    return audioContextCtor;
+  }
   if (win.webkitAudioContext) return win.webkitAudioContext;
   throw new Error("Web Audio API is not supported in this browser.");
 };
