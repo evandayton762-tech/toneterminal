@@ -91,6 +91,114 @@ const SAMPLE_TRACKS = [
   },
 ] satisfies readonly SampleTrack[];
 
+type AudioContextConstructor = typeof AudioContext;
+
+const getAudioContextConstructor = (): AudioContextConstructor => {
+  if (typeof window === "undefined") {
+    throw new Error("Audio context unavailable during server render.");
+  }
+  const win = window as Window & {
+    webkitAudioContext?: AudioContextConstructor;
+  };
+  if (win.AudioContext) return win.AudioContext;
+  if (win.webkitAudioContext) return win.webkitAudioContext;
+  throw new Error("Web Audio API is not supported in this browser.");
+};
+
+const clampClipBounds = (
+  duration: number,
+  start: number,
+  end: number
+): { start: number; end: number } => {
+  const safeStart = Math.max(0, Math.min(start, duration));
+  const maxEnd = Math.min(
+    duration,
+    Math.max(safeStart + 0.01, Math.min(end, safeStart + MAX_CLIP_SECONDS))
+  );
+  return { start: safeStart, end: maxEnd };
+};
+
+const audioBufferToWav = (buffer: AudioBuffer): ArrayBuffer => {
+  const channels = buffer.numberOfChannels;
+  const sampleRate = buffer.sampleRate;
+  const format = 1; // PCM
+  const bitDepth = 16;
+  const bytesPerSample = bitDepth / 8;
+  const blockAlign = channels * bytesPerSample;
+  const dataLength = buffer.length * blockAlign;
+  const totalLength = 44 + dataLength;
+  const arrayBuffer = new ArrayBuffer(totalLength);
+  const view = new DataView(arrayBuffer);
+
+  const writeString = (offset: number, text: string) => {
+    for (let i = 0; i < text.length; i += 1) {
+      view.setUint8(offset + i, text.charCodeAt(i));
+    }
+  };
+
+  writeString(0, "RIFF");
+  view.setUint32(4, 36 + dataLength, true);
+  writeString(8, "WAVE");
+  writeString(12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, format, true);
+  view.setUint16(22, channels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * blockAlign, true);
+  view.setUint16(32, blockAlign, true);
+  view.setUint16(34, bitDepth, true);
+  writeString(36, "data");
+  view.setUint32(40, dataLength, true);
+
+  const channelData: Float32Array[] = [];
+  for (let channel = 0; channel < channels; channel += 1) {
+    channelData.push(buffer.getChannelData(channel));
+  }
+
+  let offset = 44;
+  for (let frame = 0; frame < buffer.length; frame += 1) {
+    for (let channel = 0; channel < channels; channel += 1) {
+      const sample = channelData[channel][frame] ?? 0;
+      const clamped = Math.max(-1, Math.min(1, sample));
+      const intSample = clamped < 0 ? clamped * 0x8000 : clamped * 0x7fff;
+      view.setInt16(offset, intSample, true);
+      offset += 2;
+    }
+  }
+
+  return arrayBuffer;
+};
+
+const prepareClipFile = async (
+  sourceFile: File,
+  clipStart: number,
+  clipEnd: number
+): Promise<File> => {
+  const AudioCtor = getAudioContextConstructor();
+  const context = new AudioCtor();
+  try {
+    const arrayBuffer = await sourceFile.arrayBuffer();
+    const audioBuffer = await context.decodeAudioData(arrayBuffer.slice(0));
+    const { start, end } = clampClipBounds(audioBuffer.duration, clipStart, clipEnd);
+    const sampleRate = audioBuffer.sampleRate;
+    const startSample = Math.floor(start * sampleRate);
+    const endSample = Math.floor(end * sampleRate);
+    const frameCount = Math.max(1, endSample - startSample);
+    const channels = Math.max(1, audioBuffer.numberOfChannels);
+    const trimmed = context.createBuffer(channels, frameCount, sampleRate);
+    for (let channel = 0; channel < channels; channel += 1) {
+      const sourceData = audioBuffer.getChannelData(channel);
+      const targetData = trimmed.getChannelData(channel);
+      targetData.set(sourceData.subarray(startSample, endSample));
+    }
+    const wavBuffer = audioBufferToWav(trimmed);
+    const baseName = sourceFile.name.replace(/\.[^/.]+$/, "") || "clip";
+    return new File([wavBuffer], `${baseName}-clip.wav`, { type: "audio/wav" });
+  } finally {
+    await context.close().catch(() => undefined);
+  }
+};
+
 const formatSeconds = (value: number) => {
   const clamped = Math.max(value, 0);
   const minutes = Math.floor(clamped / 60)
@@ -575,6 +683,16 @@ const selectedPremiumDetails = useMemo(
         throw new Error("Session expired. Please sign in again.");
       }
 
+      let clipFile: File;
+      try {
+        clipFile = await prepareClipFile(file, clipRange.start, clipRange.end);
+      } catch (clipError) {
+        console.error("clip preparation failed", clipError);
+        throw new Error(
+          "Unable to prepare the selected audio clip. Try a different segment or file."
+        );
+      }
+
       const authHeaders = {
         Authorization: `Bearer ${accessToken}`,
       };
@@ -609,7 +727,7 @@ const selectedPremiumDetails = useMemo(
       }
 
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", clipFile, clipFile.name);
       formData.append("daw", selectedDAW);
       formData.append("start", clipRange.start.toString());
       formData.append("end", clipRange.end.toString());
