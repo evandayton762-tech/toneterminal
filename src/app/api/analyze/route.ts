@@ -29,7 +29,7 @@ export const runtime = "nodejs";
 export const config = {
   api: {
     bodyParser: false,
-    sizeLimit: "32mb",
+    sizeLimit: "64mb",
   },
 };
 const CLIP_SECONDS = 15;

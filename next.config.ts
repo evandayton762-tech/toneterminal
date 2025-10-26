@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   outputFileTracingRoot: process.cwd(),
   api: {
     bodyParser: {
-      sizeLimit: "32mb",
+      sizeLimit: "64mb",
     },
   },
 };
