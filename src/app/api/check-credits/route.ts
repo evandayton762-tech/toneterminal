@@ -36,13 +36,13 @@ export async function GET(request: Request) {
     }
 
     const context = await resolvePlanContext(user.id);
-    const { profile, plan } = context;
+    const { profile } = context;
 
     return NextResponse.json({
       userId: user.id,
       email: user.email,
       ...profile,
-      tier: plan.id,
+      tier: profile.tier,
     });
   } catch (error) {
     console.error("check-credits error", error);

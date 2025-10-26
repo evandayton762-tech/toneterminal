@@ -44,17 +44,9 @@ export async function resolvePlanContext(userId: string): Promise<PlanContext> {
   const profile = await getOrCreateProfile(userId);
   if (BYPASS_PLAN_GATES) {
     const plan = getPlan(PRO_PLAN_ID);
-    const elevatedProfile: Profile = {
-      ...profile,
-      tier: plan.id,
-      credits: Math.max(
-        typeof profile.credits === "number" ? profile.credits : 0,
-        plan.generationsPerMonth
-      ),
-    };
     return {
       userId,
-      profile: elevatedProfile,
+      profile,
       plan,
     };
   }
